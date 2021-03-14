@@ -4,11 +4,11 @@
   "description": "Web API 3916 Homework 3",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --timeout 10000 --exit"
+    "test": "mocha --timeout 60000 --exit"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shawnmccarthy/CSC3916_HW3.git"
+    "url": "git+https://github.com/imryankent/CSCI3916_HW3.git"
   },
   "keywords": [
     "Movie"

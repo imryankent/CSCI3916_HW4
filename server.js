@@ -24,17 +24,19 @@ var router = express.Router();
 
 function getJSONObjectForMovieRequirement(req) {
     var json = {
+        status: 200,
+        message: "No message",
         headers: "No headers",
-        key: process.env.UNIQUE_KEY,
-        body: "No body"
+        query: "No queries",
+        env: process.env.UNIQUE_KEY,
     };
-
-    if (req.body != null) {
-        json.body = req.body;
-    }
 
     if (req.headers != null) {
         json.headers = req.headers;
+    }
+
+    if (req.query != null) {
+        json.query = req.query
     }
 
     return json;
@@ -84,6 +86,58 @@ router.post('/signin', function (req, res) {
         })
     })
 });
+
+router.route('/movies')
+    .get(function(req, res) {
+            console.log(req.body);
+            res = res.status(200);
+            if (req.get('Content-Type')) {
+                res = res.type(req.get('Content-Type'));
+            }
+            var o = getJSONObjectForMovieRequirement(req);
+            o.message = "GET movies";
+            res.json(o);
+        }
+    )
+    .post(function(req, res){
+            console.log(req.body);
+
+            var movie = new Movie();
+            movie.title = req.body.title;
+            movie.year = req.body.year;
+            movie.genre = req.body.genre;
+            movie.actors = req.body.actors;
+
+            movie.save(function(err){
+                if (err) {
+                    return res.json(err);
+                }
+                res.json({success: true, msg: 'Movie was successfully saved.'})
+            });
+        }
+    )
+    .put(authJwtController.isAuthenticated, function(req, res) {
+            console.log(req.body);
+            res = res.status(200);
+            if (req.get('Content-Type')) {
+                res = res.type(req.get('Content-Type'));
+            }
+            var o = getJSONObjectForMovieRequirement(req);
+            o.message = "movie updated"
+            res.json(o);
+        }
+    )
+    .delete(authController.isAuthenticated, function(req, res) {
+            console.log(req.body);
+            res = res.status(200);
+            if (req.get('Content-Type')) {
+                res = res.type(req.get('Content-Type'));
+            }
+            var o = getJSONObjectForMovieRequirement(req);
+            o.message = "movie deleted"
+            res.json(o);
+        }
+    );
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);

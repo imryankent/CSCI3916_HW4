@@ -1,6 +1,3 @@
-  
-let envPath = __dirname + "/../.env"
-require('dotenv').config({path:envPath});
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

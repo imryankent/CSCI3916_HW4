@@ -21,7 +21,7 @@ var MovieSchema = new Schema({
         enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western']
     },
     actors: {
-        "bsonType": "array",
+        "type": "array",
         "items": [{"type": [String, String]}],
         "additionalItems": [String, String],
         "minItems": 3,

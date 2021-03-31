@@ -23,7 +23,6 @@ var MovieSchema = new Schema({
     actors: {
         "type": "array",
         "items": [{"type": [String, String]}],
-        "additionalItems": [String, String],
         "minItems": 3,
         "uniqueItems": true
     },

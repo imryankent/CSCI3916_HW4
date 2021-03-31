@@ -22,21 +22,12 @@ var MovieSchema = new Schema({
     },
     actors: {
         "bsonType": "array",
-        "items": [
-            {
-                type: [String, String]
-            }
-        ],
+        "items": [{type: [String, String]}],
         "additionalItems": [String, String],
         "minItems": 3,
         "uniqueItems": true
     },
 });
-
-MovieSchema.save(function(err, name) {
-    if(err) throw err;
-    }
-)
 
 //return the model to server
 module.exports = mongoose.model('Movie', MovieSchema);

@@ -12,7 +12,7 @@ var authJwtController = require('./auth_jwt');
 var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
-var Movie = require('./Movies');
+var Movies = require('./Movies');
 
 var app = express();
 app.use(cors());
@@ -98,12 +98,16 @@ router.route('/movies')
             var o = getJSONObjectForMovieRequirement(req);
             o.message = "GET movies";
             res.json(o);
+
+            var theMovies = new Movies();
+            theMovies = Movies.find()
+            res.json(theMovies);
         }
     )
     .post(function(req, res){
             console.log(req.body);
 
-            var movie = new Movie();
+            var movie = new Movies();
             movie.title = req.body.title;
             movie.year = req.body.year;
             movie.genre = req.body.genre;
@@ -143,5 +147,8 @@ router.route('/movies')
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
+
+
+
 
 

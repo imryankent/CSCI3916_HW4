@@ -57,7 +57,7 @@ router.route('/movies')
             } else if (movie == null) {
                 res.json({message: 'This movie isn\'t in the database'});
             } else {
-                res.json({message: movie.title + ' was deleted from the database'});
+                res.json({message: req.body.title + ' was deleted from the database'});
             }
         })
     });

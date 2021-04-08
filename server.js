@@ -51,9 +51,12 @@ router.route('/movies')
     })
 
     .delete(authController.isAuthenticated, function(req, res) {
-
-        }
-    );
+        var result = Movies.remove({title: req.body.title})
+        if(result.hasWriteError)
+            res.json(result)
+        else
+            res.json({success: false, msg: 'Delete operation removed ' + result.nRemoved + 'movie(s)'})
+    });
 
 
 router.post('/signup', function(req, res) {

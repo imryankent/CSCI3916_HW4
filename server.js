@@ -1,5 +1,5 @@
 /*
-CSC3916 HW2
+CSC3916 HW3
 File: Server.js
 Description: Web API scaffolding for Movie API
  */
@@ -25,15 +25,13 @@ var router = express.Router();
 
 router.route('/movies')
     .get(function(req, res){
-            var theMovies = new Movies();
-            theMovies = Movies.find()
-            res.json(theMovies);
-        }
-    )
+        Movies.find(function (err, movies) {
+            if(err) res.json({message: "Bad news: Couldn't get the movies. Good news: You're smart and can figure out why!"})
+            res.json(movies);
+        })
+    })
 
     .post(function(req, res){
-            console.log(req.body);
-
             var movie = new Movies();
             movie.title = req.body.title;
             movie.year = req.body.year;
@@ -46,8 +44,7 @@ router.route('/movies')
                 }
                 res.json({success: true, msg: 'Movie was successfully saved.'})
             });
-        }
-    )
+    })
 
     .put(authJwtController.isAuthenticated, function(req, res) {
 
@@ -108,6 +105,3 @@ router.post('/signin', function (req, res) {
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
-
-
-

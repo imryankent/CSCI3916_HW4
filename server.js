@@ -40,9 +40,9 @@ router.route('/movies')
 
             movie.save(function(err){
                 if (err) {
-                    return res.json(err);
+                    return res.status(400).json(err);
                 }
-                res.json({success: true, msg: 'Movie was successfully saved.'})
+                res.json({success: true, message: 'Movie was successfully saved.'})
             });
     })
 
@@ -51,11 +51,15 @@ router.route('/movies')
     })
 
     .delete(authJwtController.isAuthenticated, function(req, res) {
-        var result = Movies.remove({title: req.body.title})
-        if(result.hasWriteError)
-            res.json(result)
-        else
-            res.json({success: false, msg: 'Delete operation removed ' + result.nRemoved + 'movie(s)'})
+        Movies.remove({title: req.body.title}, function (err, movie) {
+            if (err) {
+                res.status(400).json(err);
+            } else if (movie == null) {
+                res.json({message: 'This movie isn\'t in the database'});
+            } else {
+                res.json({message: movie.title + ' was deleted from the database'});
+            }
+        })
     });
 
 

@@ -24,14 +24,14 @@ var router = express.Router();
 
 
 router.route('/movies')
-    .get(function(req, res){
+    .get(authJwtController.isAuthenticated, function(req, res){
         Movies.find(function (err, movies) {
             if(err) res.json({message: "Bad news: Couldn't get the movies. Good news: You're smart and can figure out why!"})
             res.json(movies);
         })
     })
 
-    .post(function(req, res){
+    .post(authJwtController.isAuthenticated, function(req, res){
             var movie = new Movies();
             movie.title = req.body.title;
             movie.year = req.body.year;
@@ -48,8 +48,7 @@ router.route('/movies')
 
     .put(authJwtController.isAuthenticated, function(req, res) {
 
-        }
-    )
+    })
 
     .delete(authController.isAuthenticated, function(req, res) {
 

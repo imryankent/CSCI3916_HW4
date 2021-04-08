@@ -20,28 +20,45 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
-
 var router = express.Router();
 
-function getJSONObjectForMovieRequirement(req) {
-    var json = {
-        status: 200,
-        message: "No message",
-        headers: "No headers",
-        query: "No queries",
-        env: process.env.UNIQUE_KEY,
-    };
 
-    if (req.headers != null) {
-        json.headers = req.headers;
-    }
+router.route('/movies')
+    .get(function(req, res){
+            var theMovies = new Movies();
+            theMovies = Movies.find()
+            res.json(theMovies);
+        }
+    )
 
-    if (req.query != null) {
-        json.query = req.query
-    }
+    .post(function(req, res){
+            console.log(req.body);
 
-    return json;
-}
+            var movie = new Movies();
+            movie.title = req.body.title;
+            movie.year = req.body.year;
+            movie.genre = req.body.genre;
+            movie.actors = req.body.actors;
+
+            movie.save(function(err){
+                if (err) {
+                    return res.json(err);
+                }
+                res.json({success: true, msg: 'Movie was successfully saved.'})
+            });
+        }
+    )
+
+    .put(authJwtController.isAuthenticated, function(req, res) {
+
+        }
+    )
+
+    .delete(authController.isAuthenticated, function(req, res) {
+
+        }
+    );
+
 
 router.post('/signup', function(req, res) {
     if (!req.body.username || !req.body.password) {
@@ -88,55 +105,9 @@ router.post('/signin', function (req, res) {
     })
 });
 
-router.route('/movies')
-    .get(function(req, res)
-            var theMovies = new Movies();
-            theMovies = Movies.find()
-            res.json(theMovies);
-        }
-    )
-    .post(function(req, res){
-            console.log(req.body);
-
-            var movie = new Movies();
-            movie.title = req.body.title;
-            movie.year = req.body.year;
-            movie.genre = req.body.genre;
-            movie.actors = req.body.actors;
-
-            movie.save(function(err){
-                if (err) {
-                    return res.json(err);
-                }
-                res.json({success: true, msg: 'Movie was successfully saved.'})
-            });
-        }
-    )
-    .put(authJwtController.isAuthenticated, function(req, res) {
-            console.log(req.body);
-            res = res.status(200);
-            if (req.get('Content-Type')) {
-                res = res.type(req.get('Content-Type'));
-            }
-            var o = getJSONObjectForMovieRequirement(req);
-            o.message = "movie updated"
-            res.json(o);
-        }
-    )
-    .delete(authController.isAuthenticated, function(req, res) {
-            console.log(req.body);
-            res = res.status(200);
-            if (req.get('Content-Type')) {
-                res = res.type(req.get('Content-Type'));
-            }
-            var o = getJSONObjectForMovieRequirement(req);
-            o.message = "movie deleted"
-            res.json(o);
-        }
-    );
-
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
+
 
 

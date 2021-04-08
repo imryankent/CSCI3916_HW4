@@ -50,7 +50,7 @@ router.route('/movies')
 
     })
 
-    .delete(authController.isAuthenticated, function(req, res) {
+    .delete(authJwtController.isAuthenticated, function(req, res) {
         var result = Movies.remove({title: req.body.title})
         if(result.hasWriteError)
             res.json(result)

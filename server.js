@@ -47,9 +47,28 @@ router.route('/movies')
     })
 
     .put(authJwtController.isAuthenticated, function(req, res) {
+        Movies.findOne({title: req.body.title}, function(err, found) {
+            if (err) {
+                res.json({message: "Read error \n", error: err});
+            }
+            else {
+                Movies.updateOne({title: req.body.title}, req.body.modify)
+                    .then(mov => {
+                        if (!mov) {
+                            return res.status(404).end();
+                        }
+                        return res.status(200).json({msg: "Movie is updated"})
+                    })
+                    .catch(err => console.log(err))
+            }
+        })
+    });
+
+        /*
         var query = {title: req.body.title};
         var newValues = {$set: req.body.modify};
         Movies.updateOne(query, newValues)
+         */
     })
 
     .delete(authJwtController.isAuthenticated, function(req, res) {

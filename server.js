@@ -61,15 +61,14 @@ router.route('/movies')
                     })
                     .catch(err => console.log(err))
             }
-        })
-    });
+        });
+    })
 
         /*
         var query = {title: req.body.title};
         var newValues = {$set: req.body.modify};
         Movies.updateOne(query, newValues)
          */
-    })
 
     .delete(authJwtController.isAuthenticated, function(req, res) {
         Movies.remove({title: req.body.title}, function (err, movie) {
@@ -80,7 +79,7 @@ router.route('/movies')
             } else {
                 res.json({message: req.body.title + ' was successfully deleted'});
             }
-        })
+        });
     });
 
 

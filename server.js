@@ -37,6 +37,10 @@ router.route('/movies')
             movie.year = req.body.year;
             movie.genre = req.body.genre;
             movie.actors = req.body.actors;
+    
+            if(movie.actors.length < 3){
+                return res.status(400).json({message: "Movie must have at least 3 actors."})
+            }
 
             movie.save(function(err){
                 if (err) {
@@ -57,7 +61,7 @@ router.route('/movies')
                         if (!mov) {
                             return res.status(404).end();
                         }
-                        return res.status(200).json({msg: "Movie is updated"})
+                        return res.status(200).json({message: "Movie is updated"})
                     })
                     .catch(err => console.log(err))
             }

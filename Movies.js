@@ -20,5 +20,7 @@ var MovieSchema = new Schema({
     actors: {type: [{actorName: String, characterName: String}], minItems: 3, required: true},
 });
 
+//NEXT STEP: Validate 3 actors
+
 //return the model to server
 module.exports = mongoose.model('Movie', MovieSchema);

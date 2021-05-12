@@ -13,6 +13,7 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
 var Movies = require('./Movies');
+var Reviews = require('./Reviews');
 
 var app = express();
 app.use(cors());
@@ -85,6 +86,26 @@ router.route('/movies')
             }
         });
     });
+
+router.route('/review')
+    .post(authJwtController.isAuthenticated, function(req, res){
+        var review = new Reviews();
+        review.name = req.body.name;
+        review.quote = req.body.quote;
+        review.stars = req.body.stars;
+        review.title = req.body.title;
+
+        if(!Movies.findOne({title: req.body.title})){
+            return res.status(400).json({message: "Please add movie to database before writting a review."})
+        }
+
+        review.save(function(err){
+            if (err) {
+                return res.status(400).json(err);
+            }
+            res.json({success: true, message: 'Review for ' + req.body.title + ' was successfully saved.'})
+        });
+    })
 
 
 router.post('/signup', function(req, res) {

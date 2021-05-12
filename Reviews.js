@@ -14,8 +14,8 @@ mongoose.set('useCreateIndex', true);
 
 //review schema
 var ReviewSchema = new Schema({
-    name: {type: string, required: true},
-    quote: {type: string},
+    name: {type: String, required: true},
+    quote: {type: String},
     stars: {type: Number, min: 1, max: 5},
     title: {type: String, required: true},
 });
